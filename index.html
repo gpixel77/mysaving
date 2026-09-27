@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>My Saving Tracker</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: #f5f7fb;
+        color: #1f2937;
+        min-height: 100vh;
+      }
+
+      /* =========================
+           HEADER
+        ========================= */
+
+      header {
+        background: #111827;
+        color: white;
+        padding: 22px 7%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 21px;
+      }
+
+      .logo h1 {
+        font-size: 20px;
+      }
+
+      .logo span {
+        color: #a78bfa;
+      }
+
+      .target-badge {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+      }
+
+      /* =========================
+           MAIN
+        ========================= */
+
+      main {
+        width: 86%;
+        max-width: 1200px;
+        margin: 35px auto;
+      }
+
+      .welcome {
+        margin-bottom: 25px;
+      }
+
+      .welcome h2 {
+        font-size: 28px;
+        margin-bottom: 6px;
+      }
+
+      .welcome p {
+        color: #6b7280;
+      }
+
+      /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 22px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+        border: 1px solid #eef0f5;
+      }
+
+      .card-label {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .card-value {
+        font-size: 27px;
+        font-weight: 800;
+      }
+
+      .purple {
+        color: #7c3aed;
+      }
+
+      .green {
+        color: #16a34a;
+      }
+
+      .red {
+        color: #ef4444;
+      }
+
+      /* =========================
+           PROGRESS
+        ========================= */
+
+      .progress-card {
+        background: linear-gradient(135deg, #111827, #1f2937);
+        color: white;
+        border-radius: 22px;
+        padding: 28px;
+        margin-bottom: 22px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12);
+      }
+
+      .progress-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .progress-title {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      #percentage {
+        color: #c4b5fd;
+        font-weight: 800;
+        font-size: 20px;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #7c3aed, #c084fc);
+        transition: width 0.6s ease;
+      }
+
+      .progress-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 13px;
+        color: #cbd5e1;
+        font-size: 13px;
+      }
+
+      /* =========================
+           CONTENT GRID
+        ========================= */
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 22px;
+      }
+
+      /* =========================
+           FORM
+        ========================= */
+
+      .form-card h3,
+      .history-card h3 {
+        margin-bottom: 20px;
+        font-size: 19px;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        color: #6b7280;
+        margin-bottom: 7px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        outline: none;
+        font-size: 14px;
+        background: #fafafa;
+        transition: 0.2s;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        background: white;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #7c3aed, #9333ea);
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
+      }
+
+      /* =========================
+           HISTORY
+        ========================= */
+
+      .history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .transaction {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        border: 1px solid #edf0f4;
+        border-radius: 14px;
+        transition: 0.2s;
+      }
+
+      .transaction:hover {
+        background: #faf9ff;
+        transform: translateX(2px);
+      }
+
+      .transaction-left {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+      }
+
+      .transaction-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: #ede9fe;
+        color: #7c3aed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .transaction-title {
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .transaction-date {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 4px;
+      }
+
+      .transaction-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .transaction-amount {
+        color: #16a34a;
+        font-weight: 800;
+        font-size: 14px;
+      }
+
+      .delete-btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 8px;
+        background: #fee2e2;
+        color: #ef4444;
+        cursor: pointer;
+      }
+
+      .delete-btn:hover {
+        background: #fecaca;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 40px 20px;
+        color: #9ca3af;
+      }
+
+      .empty-icon {
+        font-size: 38px;
+        margin-bottom: 10px;
+      }
+
+      /* =========================
+           FOOTER
+        ========================= */
+
+      footer {
+        text-align: center;
+        padding: 30px;
+        color: #9ca3af;
+        font-size: 13px;
+      }
+
+      /* =========================
+           RESPONSIVE
+        ========================= */
+
+      @media (max-width: 850px) {
+        .summary {
+          grid-template-columns: 1fr;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        header {
+          padding: 18px 5%;
+        }
+
+        main {
+          width: 92%;
+        }
+
+        .target-badge {
+          display: none;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .welcome h2 {
+          font-size: 23px;
+        }
+
+        .card-value {
+          font-size: 23px;
+        }
+
+        .progress-card {
+          padding: 22px;
+        }
+
+        .transaction-amount {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-icon">💰</div>
+
+        <div>
+          <h1>My <span>Saving</span></h1>
+        </div>
+      </div>
+
+      <div class="target-badge">🎯 Target: Rp8.000.000</div>
+    </header>
+
+    <main>
+      <div class="welcome">
+        <h2>Tabungan Saya 👋</h2>
+        <p>Pantau perjalananmu menuju target Rp8 juta.</p>
+      </div>
+
+      <!-- SUMMARY -->
+
+      <section class="summary">
+        <div class="card">
+          <div class="card-label">💰 Total Tabungan</div>
+
+          <div class="card-value purple" id="totalSaving">Rp0</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">🎯 Target Tabungan</div>
+
+          <div class="card-value">Rp8.000.000</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">📉 Masih Kurang</div>
+
+          <div class="card-value red" id="remaining">Rp8.000.000</div>
+        </div>
+      </section>
+
+      <!-- PROGRESS -->
+
+      <section class="progress-card">
+        <div class="progress-top">
+          <div class="progress-title">Progress Tabungan</div>
+
+          <div id="percentage">0%</div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="progress-info">
+          <span id="progressCurrent"> Rp0 terkumpul </span>
+
+          <span> Rp8.000.000 </span>
+        </div>
+      </section>
+
+      <!-- CONTENT -->
+
+      <section class="content-grid">
+        <!-- ADD SAVING -->
+
+        <div class="card form-card">
+          <h3>➕ Tambah Tabungan</h3>
+
+          <form id="savingForm">
+            <div class="form-group">
+              <label> Jumlah Pemasukan </label>
+
+              <input
+                type="number"
+                id="amount"
+                placeholder="Contoh: 500000"
+                min="1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label> Sumber Pemasukan </label>
+
+              <select id="category">
+                <option value="Gaji">💼 Gaji</option>
+
+                <option value="Freelance">💻 Freelance</option>
+
+                <option value="PKL">🏢 PKL</option>
+
+                <option value="Live Streaming">🎮 Live Streaming</option>
+
+                <option value="Bonus">🎁 Bonus</option>
+
+                <option value="Lainnya">💰 Lainnya</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label> Keterangan </label>
+
+              <input
+                type="text"
+                id="description"
+                placeholder="Contoh: Tabungan bulan September"
+                required
+              />
+            </div>
+
+            <button type="submit" class="btn">+ Tambahkan Tabungan</button>
+          </form>
+        </div>
+
+        <!-- HISTORY -->
+
+        <div class="card history-card">
+          <h3>📋 Riwayat Pemasukan</h3>
+
+          <div class="history-list" id="historyList"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>My Saving Tracker • Target Rp8.000.000</footer>
+
+    <script>
+      // ==========================================
+      // KONFIGURASI
+      // ==========================================
+
+      const TARGET = 8000000;
+
+      let transactions =
+        JSON.parse(localStorage.getItem("savingTransactions")) || [];
+
+      // ==========================================
+      // FORMAT RUPIAH
+      // ==========================================
+
+      function formatRupiah(number) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          maximumFractionDigits: 0,
+        }).format(number);
+      }
+
+      // ==========================================
+      // FORMAT TANGGAL
+      // ==========================================
+
+      function formatDate(date) {
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(new Date(date));
+      }
+
+      // ==========================================
+      // UPDATE DASHBOARD
+      // ==========================================
+
+      function updateDashboard() {
+        const total = transactions.reduce(
+          (sum, transaction) => sum + transaction.amount,
+          0,
+        );
+
+        const remaining = Math.max(TARGET - total, 0);
+
+        const percentage = Math.min((total / TARGET) * 100, 100);
+
+        document.getElementById("totalSaving").textContent =
+          formatRupiah(total);
+
+        document.getElementById("remaining").textContent =
+          formatRupiah(remaining);
+
+        document.getElementById("percentage").textContent =
+          percentage.toFixed(1) + "%";
+
+        document.getElementById("progressFill").style.width = percentage + "%";
+
+        document.getElementById("progressCurrent").textContent =
+          formatRupiah(total) + " terkumpul";
+
+        renderTransactions();
+      }
+
+      // ==========================================
+      // RENDER TRANSACTIONS
+      // ==========================================
+
+      function renderTransactions() {
+        const list = document.getElementById("historyList");
+
+        if (transactions.length === 0) {
+          list.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        💸
+                    </div>
+
+                    <p>
+                        Belum ada pemasukan.
+                    </p>
+
+                    <small>
+                        Yuk mulai menabung!
+                    </small>
+
+                </div>
+
+            `;
+
+          return;
+        }
+
+        // terbaru berada di atas
+
+        const sorted = [...transactions].reverse();
+
+        list.innerHTML = sorted
+          .map(
+            (transaction) => `
+
+                <div class="transaction">
+
+                    <div class="transaction-left">
+
+                        <div class="transaction-icon">
+                            +
+                        </div>
+
+                        <div>
+
+                            <div class="transaction-title">
+                                ${escapeHTML(transaction.description)}
+                            </div>
+
+                            <div class="transaction-date">
+                                ${transaction.category}
+                                •
+                                ${formatDate(transaction.date)}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="transaction-right">
+
+                        <div class="transaction-amount">
+                            +${formatRupiah(transaction.amount)}
+                        </div>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteTransaction('${transaction.id}')">
+
+                            ×
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `,
+          )
+          .join("");
+      }
+
+      // ==========================================
+      // TAMBAH TRANSAKSI
+      // ==========================================
+
+      document
+        .getElementById("savingForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const amount = Number(document.getElementById("amount").value);
+
+          const category = document.getElementById("category").value;
+
+          const description = document
+            .getElementById("description")
+            .value.trim();
+
+          if (!amount || amount <= 0 || !description) {
+            alert("Mohon isi data dengan benar.");
+
+            return;
+          }
+
+          const transaction = {
+            id: Date.now().toString(),
+
+            amount: amount,
+
+            category: category,
+
+            description: description,
+
+            date: new Date().toISOString(),
+          };
+
+          transactions.push(transaction);
+
+          saveData();
+
+          this.reset();
+
+          updateDashboard();
+        });
+
+      // ==========================================
+      // HAPUS TRANSAKSI
+      // ==========================================
+
+      function deleteTransaction(id) {
+        const confirmDelete = confirm("Hapus pemasukan ini?");
+
+        if (!confirmDelete) return;
+
+        transactions = transactions.filter(
+          (transaction) => transaction.id !== id,
+        );
+
+        saveData();
+
+        updateDashboard();
+      }
+
+      // ==========================================
+      // LOCAL STORAGE
+      // ==========================================
+
+      function saveData() {
+        localStorage.setItem(
+          "savingTransactions",
+          JSON.stringify(transactions),
+        );
+      }
+
+      // ==========================================
+      // SECURITY
+      // ==========================================
+
+      function escapeHTML(text) {
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+      }
+
+      // ==========================================
+      // INITIAL LOAD
+      // ==========================================
+
+      updateDashboard();
+    </script>
+  </body>
+</html>
